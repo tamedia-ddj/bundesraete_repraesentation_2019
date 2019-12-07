@@ -8,7 +8,7 @@
 
 In der vorliegenden Analyse wurden für die Sonntagszeitung Lebensläufe aller 119 Bundesräte ausgewertet. Auf Basis manuell zusammengetragener Informationen (Wikipedia, Historisches Lexikon der Schweiz) und ergänzt durch vom BFS bereitgestellten Statistiken werden beschreibende Statisiken zur Regierung seit bestehen des Schweizer Bundesstaats erstellt.
 
-Zusätzlich wurde ein Repräsentations-Index erstellt, der beschreibt wie stark die Zusammensetzung des Bundesrats die Parteienstärke in Nationalrat widerspiegelt. Die Repräsentation des Parlaments pro Bundesratspartei wurde ermittelt, indem untersucht wurde, mit welchem Anteil sie im jeweiligen Jahr im Bundesrat vertreten war. Dieser Anteil wurde mit der Parteistärke im Nationalrat verglichen. Je stärker diese Werte voneinander abweichen, desto schlechter war der Wählerwille im Bundesrat vertreten, so die Annahme. Die Summe dieser Differenzen, normalisiert auf die Skala von 0 bis 1, ergibt den Repräsentations-Index. Hohe Werte bedeuten eine gute Repräsentation, tiefe Werte eine schlechte.
+Zusätzlich wurde ein Repräsentations-Index erstellt, der beschreibt wie stark die Zusammensetzung des Bundesrats die Parteienstärke in Nationalrat widerspiegelt. 
 
 Zum Schluss wurde auf Basis der Einwohnerzahlen 2018 berechnet, wie viele Bundesratssitze (und wieviele Amtstage) einzelnen Kantonen und Regionen eigentlich zugeständen wären, wenn die Sitze nach Anzahl der Kantons-Bevölkerung verteilt würden.
 
@@ -62,50 +62,33 @@ Ergänzt durch Informationen des Bundesamts für Statistik und der Historischen 
 
 Der Repräsentations-Index soll beschreiben wie stark die Zusammensetzung des Bundesrats die Parteienstärke in Nationalrat widerspiegelt.
 
-Einige Beispielelemente:
+Die Repräsentation des Parlaments pro Bundesratspartei wurde ermittelt, indem untersucht wurde, mit welchem Anteil sie im jeweiligen Jahr im Bundesrat vertreten war. Dieser Anteil wurde mit der Parteistärke im Nationalrat verglichen. Je stärker diese Werte voneinander abweichen, desto schlechter war der Wählerwille im Bundesrat vertreten, so die Annahme. Die Summe dieser Differenzen, normalisiert auf die Skala von 0 bis 1, ergibt den Repräsentations-Index. Hohe Werte bedeuten eine gute Repräsentation, tiefe Werte eine schlechte.
 
-**Text:**
-
-In der Tabelle `cutbacks` werden auf Ebene der Gemeinde die Anzahl der Betriebe ermittelt, bei denen in 3 oder mehr Jahren (von insgesamt 4 Jahren) Kürzungen veranlasst wurden. Während des Exportprozesses wird der Spalte `multiple_cutbacks` die Anzahl Betriebe hinterlegt, die diese Bedingungen erfüllen.
-
-**Liste**
-
-* item 1
-* item 2
-* item 3
-* ...
-
-
-**Abschnitt mit code:**
+Um dies zu erreichen wurden erst die Parteistärken im Parlament ermittelt. Dies geschah auf Basis der Sitzverteilung im Nationalrat. Um die Entwicklung nahtlos darzulegen, wurde die Resultate auch auf die Jahre zwischen den Nationalratswahlen ausgedehnt. Berücksichtigt wurde dabei nur Parteien die seit 1848 mindestens 1 Vertreter im Bundesrat hatten. Dies resultiert im Dataframe `partei_years`:
 
 ```
-for filename in os.listdir(directory):
-    if (("srt" in filename)):
-        with open(directory+filename, "rb") as file:
-            ### decode and parse data
-            data = file.read().decode("iso-8859-1")
-            subtitle_generator = srt.parse(data)
-            subtitle = list(subtitle_generator)
-            identified_subtitles = identify_subtitles(subtitle)
-            
-            ### handle 1. counter for host, 2. comments and 3. counter for rest
-            for line in identified_subtitles:
-                if line[0] == "Moderator":
-                    words_moderator += len(tokenizer.tokenize(line[1]))
-                elif line[0] == "<---> Kommentar <--->":
-                    comments.append([filename, line[1]])
-                else:
-                    words_rest += len(tokenizer.tokenize(line[1]))
+# expand data to each year (inluding years inbetween elections)
+partei_years = pd.DataFrame()
+index_list = []
+for year in range(1848,2020):
+    years = parteistaerke.Jahr.tolist()
+    if (year in years):
+        jahr = year
+    elif (year-1 in parteistaerke.Jahr.tolist()):
+        jahr = year-1
+    elif (year-2 in parteistaerke.Jahr.tolist()):
+        jahr = year-2
+    elif (year-3 in parteistaerke.Jahr.tolist()):
+        jahr = year-3
+
+    partei_years = partei_years.append(parteistaerke[parteistaerke.Jahr == jahr][['Jahr', 'population_share_FDP/PRD', 'population_share_CVP/PDC',
+       'population_share_SPS/PSS', 'population_share_SVP/UDC',
+       'population_share_BDP/PBD', 'population_share_LPS/PLS']], ignore_index=True)
+    index_list.append(year)
+partei_years['year'] = index_list
 ``` 
 
-**Tabelle:**
-
-Variable | Beschreibunng
---- | --- 
-`KUERZUNGEN` | Anzahl Kürzungen auf Gemeindeebene
-`BETRIEBE_TOTAL` | Anzahl Betriebe auf Gemeindeebene
-`KUERZUNGEN_ANTEIL` | Prozentualer Anteil der Betriebe die Kürzungen erhalten haben
-`KUERZUNGEN_BETRAG_AVG` | Durchschnittliche Höhe der Kürzungen pro Gemeinde
+Nun werden pro Jahr für alle Parteien die sich im jeweiligen Jahr im Bundesrat befinden, die absoluten Differenzen (keine negativen Werte) zwischen ihrem Anteil im Bundesrat und ihrem Anteil im Nationalrat berechnet. Die Summe der Differenzen aller Bundesratsparteien, zeigt nun wie Nahe die Machtverteilung im Bundesrat der Machtverteilung im Nationalrat ist. Damit die Darstellung und Interpretation dieses Wertes einfacher ist, wurde die Skala normalisiert:  `1 - (abs(difference) / 100)`
 
 ## 3. Verteilung nach Kanton und Region
 
