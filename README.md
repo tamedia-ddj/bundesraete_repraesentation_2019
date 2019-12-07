@@ -90,6 +90,8 @@ partei_years['year'] = index_list
 
 Nun werden pro Jahr für alle Parteien die sich im jeweiligen Jahr im Bundesrat befinden, die absoluten Differenzen (keine negativen Werte) zwischen ihrem Anteil im Bundesrat und ihrem Anteil im Nationalrat berechnet. Die Summe der Differenzen aller Bundesratsparteien, zeigt nun wie Nahe die Machtverteilung im Bundesrat der Machtverteilung im Nationalrat ist. Damit die Darstellung und Interpretation dieses Wertes einfacher ist, wurde die Skala normalisiert:  `1 - (abs(difference) / 100)`
 
+Die Resultate zum Schluss in folgende Datei exportiert: `output/viz_br_parties.csv`.
+
 ## 3. Verteilung nach Kanton und Region
 
 
@@ -101,9 +103,9 @@ Nun werden pro Jahr für alle Parteien die sich im jeweiligen Jahr im Bundesrat 
 
 Variable | Beschreibunng
 --- | --- 
-`year ` | eindeutiger Identifikator
-`mean_age ` | Beschreibung der ersten Variable
-`age_population` | und so weiter...
+`year ` | Jahr
+`mean_age ` | Durchschnittsalter des Bundesrats im jeweiligen Jahr
+`age_population` | Durchschnittsalter der CH-Bevölkerung im jeweiligen Jahr
 
 
 ### output/viz\_br\_frauenanteil.csv
@@ -111,59 +113,59 @@ Variable | Beschreibunng
 
 Variable | Beschreibunng
 --- | --- 
-`year` | eindeutiger Identifikator
-`share_female` | Beschreibung der ersten Variable
+`year` | Jahr
+`share_female` | Anteil weiblicher Bundesräte in jeweiligem Jahr (in %)
 
 ### output/viz\_br\_parties.csv
 
 
 Variable | Beschreibunng
 --- | --- 
-`year` | eindeutiger Identifikator
-`BR_closeness` | Beschreibung der ersten Variable
+`year` | Jahr
+`BR_closeness` | Repräsentations-Index (zwischen 0 und 1) in jeweiligem Jahr
 
 ### output/viz\_br\_social\_mobility.csv
 
 
 Variable | Beschreibunng
 --- | --- 
-`year ` | eindeutiger Identifikator
-`nr_family ` | Beschreibung der ersten Variable
+`year ` | Jahr 
+`nr_family ` | Anzahl Bundesräte aus vermögenden Verhältnissen bzw. aus Akademiker-Familie in jeweiligem Jahr
 
 ### output/viz\_kantone\_br\_bars\_online.csv
 
 
 Variable | Beschreibunng
 --- | --- 
-`kte_kurz ` | eindeutiger Identifikator
-`BR_diff ` | Beschreibung der ersten Variable
+`kte_kurz ` | Kantonsbezeichnung Abkürzung
+`BR_diff ` | Differenz von realer Anzahl Bundesratssitze zur Anzahl die dem Kanton, gemessen an der Bevölkerungszahl 2018, zu stehen würde.
 
 ### output/viz\_kantone\_br\_bars\_print.csv
 
 
 Variable | Beschreibunng
 --- | --- 
-`kte_kurz ` | eindeutiger Identifikator
-`BR_diff ` | Beschreibung der ersten Variable
-`time_diff ` | und so weiter...
+`kte_kurz ` | Kantonsbezeichnung Abkürzung
+`BR_diff ` | Differenz von realer Anzahl Bundesratssitze zur Anzahl die dem Kanton, gemessen an der Bevölkerungszahl 2018, zu stehen würde.
+`time_diff ` | Differenz von realer Anzahl Amtstage im Bundesrat zur Anzahl die dem Kanton, gemessen an der Bevölkerungszahl 2018, zu stehen würde.
 
 ### output/viz\_kantone\_br\_map.csv
 
 
 Variable | Beschreibunng
 --- | --- 
-`kte_kurz ` | eindeutiger Identifikator
-`Kanton ` | Beschreibung der ersten Variable
-`BR_diff ` | und so weiter...
-`time_diff ` | und so weiter...
+`kte_kurz ` | Kantonsbezeichnung Abkürzung
+`Kanton ` | Kantonsbezeichnung
+`BR_diff ` | Differenz von realer Anzahl Bundesratssitze zur Anzahl die dem Kanton, gemessen an der Bevölkerungszahl 2018, zu stehen würde.
+`time_diff ` | Differenz von realer Anzahl Amtstage im Bundesrat zur Anzahl die dem Kanton, gemessen an der Bevölkerungszahl 2018, zu stehen würde.
 
 ### output/viz\_regions\_br\_bars.csv
 
 
 Variable | Beschreibunng
 --- | --- 
-`region ` | eindeutiger Identifikator
-`BR_diff ` | Beschreibung der ersten Variable
+`region ` | Region gemäss vom Bundesamt für Statistik (BFS) definierter Bezugsräume
+`BR_diff ` | Differenz von realer Anzahl Bundesratssitze zur Anzahl die der Region, gemessen an der Bevölkerungszahl 2018, zu stehen würde.
 
 ## 5. Lizenz
 
