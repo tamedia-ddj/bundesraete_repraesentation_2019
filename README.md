@@ -90,9 +90,33 @@ partei_years['year'] = index_list
 
 Nun werden pro Jahr für alle Parteien die sich im jeweiligen Jahr im Bundesrat befinden, die absoluten Differenzen (keine negativen Werte) zwischen ihrem Anteil im Bundesrat und ihrem Anteil im Nationalrat berechnet. Die Summe der Differenzen aller Bundesratsparteien, zeigt nun wie Nahe die Machtverteilung im Bundesrat der Machtverteilung im Nationalrat ist. Damit die Darstellung und Interpretation dieses Wertes einfacher ist, wurde die Skala normalisiert:  `1 - (abs(difference) / 100)`
 
-Die Resultate zum Schluss in folgende Datei exportiert: `output/viz_br_parties.csv`.
+Die Resultate werden zum Schluss in folgende Datei exportiert: `output/viz_br_parties.csv`.
 
 ## 3. Verteilung nach Kanton und Region
+
+Als Letztes wird berechnet, wie die Verteilung der Bundesratssitze nach Kantonen bzw. Regionen aussieht. Die Informationen zu Kantonen werden von Wikipia und dem BFS importiert und zusammengefasst.
+
+Von den bereits zuvor ermittelten Informationen zu den Bundesräten (`council_merge`) welche auch den Herkunftskanton der 119 Amtsinhaber beihalten, können die Anzahl Bundesräte, die die jeweiligen Kantone seit 1848 stellten, ermittelt werden.
+
+```
+council_merge.groupby("Kanton").count()[['Name']]
+```
+
+Aus dem Datum der Wahl (`council_merge['Election']`) und dem Rücktrittsdatum (`council_merge['Left office']`) ist auch die Amtsdauer der Bundesräte bekannt. Identisch zur Anzahl Bundesräte, kann nun auch die Gesamtdauer aller Amtszeiten pro Kanton berechnet werden. Die `time_in_office` wird initial in Stunden berechnet.
+
+```
+council_merge[['Kanton', 'time_in_office']].groupby("Kanton").sum()
+```
+
+Nun sind die realen Werte von Amtsdauer und Anzahl Bundesräte pro Kanton bekannt. Zusätzlich kann aber berechnet werden, wie die Verteilung aussähe wenn die Bundesratssitze und die Amtsdauer nach Anzahl Einwohner der Kantone verteilt würde. Als zu verteilende Werte werden die Summen aller bereits verteilten Bundesratssitze (119) und die Summe aller Amtszeiten herangezogen.
+
+Da alle Jahre zurück bis 1848 berücksichtigt werden, der Kanton Jura aber offiziell erst seit 1979 existiert, wird dessen Einwohnerzahl entsprechend gewichtet. Nun kann gewichtet nach Anzahl (gewichteter) Einwohner der Kantone im Jahr 2018 die neue Verteilung errechnet werden.
+Weil insbesondere die Abweichung von den realen Werten interessiert, wird jetzt die Differenz aus realen und errechnet werden gebildet. 
+Die Ergebnisse werden in die drei csvs `output/viz_kantone_br_bars_online.csv`, `output/viz_kantone_br_bars_print.csv` und `output/viz_kantone_br_map.csv` zur weiteren Visualisierung exportiert.
+
+Identisch zu den Kantonen, kann obige Berechnung auch für Regionen durchgeführt werden. Auf Basis von vom [BFS definierten regionalen Bezugsräumen](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/medienmitteilungen.assetdetail.11611.html), werden die Kantone zusammengefasst und die Rechnung wiederholt. Die Resultate werden nach `output/viz_regions_br_bars.csv`
+exportiert.
+
 
 
 
