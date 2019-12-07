@@ -111,7 +111,7 @@ council_merge[['Kanton', 'time_in_office']].groupby("Kanton").sum()
 Nun sind die realen Werte von Amtsdauer und Anzahl Bundesräte pro Kanton bekannt. Zusätzlich kann aber berechnet werden, wie die Verteilung aussähe wenn die Bundesratssitze und die Amtsdauer nach Anzahl Einwohner der Kantone verteilt würde. Als zu verteilende Werte werden die Summen aller bereits verteilten Bundesratssitze (119) und die Summe aller Amtszeiten herangezogen.
 
 Da alle Jahre zurück bis 1848 berücksichtigt werden, der Kanton Jura aber offiziell erst seit 1979 existiert, wird dessen Einwohnerzahl entsprechend gewichtet. Nun kann gewichtet nach Anzahl (gewichteter) Einwohner der Kantone im Jahr 2018 die neue Verteilung errechnet werden.
-Weil insbesondere die Abweichung von den realen Werten interessiert, wird jetzt die Differenz aus realen und errechnet werden gebildet. 
+Weil insbesondere die Abweichung von den realen Werten interessiert, wird jetzt die Differenz aus realen und errechnet Werten gebildet. 
 Die Ergebnisse werden in die drei csvs `output/viz_kantone_br_bars_online.csv`, `output/viz_kantone_br_bars_print.csv` und `output/viz_kantone_br_map.csv` zur weiteren Visualisierung exportiert.
 
 Identisch zu den Kantonen, kann obige Berechnung auch für Regionen durchgeführt werden. Auf Basis von vom [BFS definierten regionalen Bezugsräumen](https://www.bfs.admin.ch/bfs/de/home/statistiken/kataloge-datenbanken/medienmitteilungen.assetdetail.11611.html), werden die Kantone zusammengefasst und die Rechnung wiederholt. Die Resultate werden nach `output/viz_regions_br_bars.csv`
